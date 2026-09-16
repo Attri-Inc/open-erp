@@ -1,9 +1,9 @@
 # Recording the Cowork demo
 
-The README's **See it in action** GIF is `docs/images/mcp-demo.gif`, rendered from
-the transcript this script produces. Recording the same session in Claude Cowork
-and saving it over that file swaps in a screen capture. This is the script — a procure-to-pay cycle that ends with three-way matching
-refusing a bill nobody should pay.
+The README's **See it in action** GIF is `docs/images/cowork-demo.gif` — a
+screen capture of a real Claude Cowork session against the seeded database. It
+covers prompt 1. The full script below runs a procure-to-pay cycle that ends
+with three-way matching refusing a bill nobody should pay.
 
 ## Before recording
 

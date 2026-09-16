@@ -20,12 +20,11 @@ Part of a family of local-first agent services:
 
 ## See it in action
 
-![OpenERP's MCP tools driving a procure-to-pay cycle](docs/images/mcp-demo.gif)
+![OpenERP in Claude Cowork](docs/images/cowork-demo.gif)
 
-A purchase order raised, goods received short, and the vendor bill blocked by
-three-way matching — every step posting to the general ledger, driven entirely
-in conversation. Real output from the MCP server; reproduce it with
-[docs/demo-script.md](docs/demo-script.md).
+Asked in plain language, answered from the ledger — stock on hand across
+warehouses, with no query written and no screen driven. More of the walkthrough
+in [docs/demo-script.md](docs/demo-script.md).
 
 ---
 
