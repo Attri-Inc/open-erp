@@ -1,0 +1,4 @@
+# Runtime dependencies for the container image, mirroring [project.dependencies]
+# in pyproject.toml. Keep these two in sync (Dependabot updates both).
+mcp[cli]>=2.1.1
+aiosqlite>=0.22.1

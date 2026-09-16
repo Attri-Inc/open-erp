@@ -1,0 +1,22 @@
+services:
+  openerp:
+    build: .
+    # Bind to localhost only — never publish the books to the LAN by default.
+    ports:
+      - "127.0.0.1:8793:8793"
+    volumes:
+      - openerp-data:/data
+    environment:
+      - OPENERP_DB=/data/openerp.db
+      - MCP_TRANSPORT=streamable-http
+      - MCP_HOST=0.0.0.0
+      - MCP_PORT=8793
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('127.0.0.1', 8793), 2)"]
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+
+volumes:
+  openerp-data:

@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=82.0.1", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openerp"
+version = "0.1.0"
+description = "Local-first ERP for agents — purchasing, inventory and sales over a double-entry ledger, exposed as MCP."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "Attri", email = "engineering@attri.ai" },
+]
+keywords = ["mcp", "claude", "erp", "inventory", "purchasing", "accounting", "agent", "audit"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial :: Accounting",
+]
+dependencies = [
+    "aiosqlite>=0.22.1",
+    "mcp[cli]>=2.1.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "ruff>=0.15.18",
+    "mypy>=2.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Attri-Inc/open-erp"
+Issues = "https://github.com/Attri-Inc/open-erp/issues"
+
+[project.scripts]
+openerp = "src.mcp_server:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["src", "scripts", "tests"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
