@@ -4,6 +4,7 @@ data
 tests
 docs
 *.md
+!README.md
 .pytest_cache
 .ruff_cache
 .mypy_cache
