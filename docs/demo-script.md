@@ -33,26 +33,47 @@ connectors.
 
 ## The prompts
 
+Typed the way someone actually talks to an assistant — lowercase, short, no
+nouns spelled out. The first three interrogate data that is already seeded; the
+last three create one order so the three-way match has something to refuse.
+
 | # | Prompt | What lands on screen |
 |---|--------|----------------------|
-| 1 | *Using OpenERP, are our books balanced?* | `get_trial_balance` — debits equal credits |
-| 2 | *Raise a purchase order with Northwind Components for 100 aluminium brackets at $4.50 each into the main warehouse, and confirm it.* | `create_purchase_order` + `confirm_purchase_order` — PO-0007, $450.00 |
-| 3 | *Only 90 turned up. Book the goods receipt.* | `receive_goods` — GRN-0007, 90 units, $405.00 to inventory |
-| 4 | *Northwind just billed us for all 100. Can we post that bill?* | `match_vendor_bill` — **blocked**: "billed 100, but only 90 is received and not yet billed" |
-| 5 | *What have we received that nobody has billed us for?* | `get_unbilled_receipts` — the GRNI balance |
+| 1 | *what's in the warehouse?* | `get_stock_on_hand` — 53 brackets, 560 hinges, 700 cartons, all at MAIN |
+| 2 | *what's our oldest unpaid invoice?* | `get_ar_aging` — INV-0002, Meridian Retail, due 2026-08-24, 23 days overdue, $1,230.00 |
+| 3 | *how much stock do we have?* | `get_stock_valuation` — $954.00 + $3,670.50 + $665.00 = **$5,289.50** at AVCO |
+| 4 | *northwind are sending 100 brackets at $4.50, set it up* | `create_purchase_order` — PO-0004, $450.00 |
+| 5 | *only 90 turned up* | `receive_goods` — GRN-0004, 90 of 100, $405.00 |
+| 6 | *they've invoiced us for all 100 though, post it* | `match_vendor_bill` — **blocked**: "billed 100, but only 90 is received and not yet billed" |
 
-Step 4 is the point of the demo: the bill is refused by the data, not by a
-reviewer remembering to check.
+Step 6 is the point of the demo: the bill is refused by the data, not by a
+reviewer remembering to check. Good follow-up to hold on — *so what do I do?*
+
+### Other questions the seeded data answers well
+
+Two of these surface real problems already sitting in the books:
+
+- *did we forget to bill anyone?* — SO-0003, Rivet & Co, shipped DN-0003 on
+  2026-09-13, **$850.00 never invoiced** while $450.00 of COGS was booked.
+- *anything we've received but not paid for?* — **$1,700.00** in GRNI; PO-0003
+  from Northwind, received 2026-09-10, no vendor bill exists.
+- *why do we only have 53 brackets?* — audit row 45,
+  "-2 unit of SKU-100 at MAIN · Damaged in handling".
+- *what's our best margin?* — shipping cartons, 56.8% ($0.95 → $2.20).
+- *can I just delete that entry?* — no delete exists among the 47 tools;
+  corrections are contra postings, and `run_query` refuses anything but SELECT.
 
 ## Verified output
 
-Driven over the MCP stdio transport against a seeded database:
+Driven over the MCP stdio transport against a freshly seeded database:
 
 ```
-PO-0007   total $450.00   status confirmed
-GRN-0007  90 units        value $405.00
-match     matched=false   line 1: billed 100, but only 90 is received and not yet billed
-trial balance  $12,670.00 debit / $12,670.00 credit   balanced=true
+stock on hand   53 SKU-100 · 560 SKU-200 · 700 SKU-300, all at MAIN
+oldest unpaid   INV-0002 Meridian Retail, due 2026-08-24, 23 days, $1,230.00
+stock value     $5,289.50 at AVCO
+PO-0004         total $450.00   confirmed
+GRN-0004        90 of 100       value $405.00
+match           matched=false   billed 100, but only 90 is received and not yet billed
 ```
 
 ## Capture settings
