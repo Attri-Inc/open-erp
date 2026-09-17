@@ -22,12 +22,6 @@ Part of a family of local-first agent services:
 
 ![OpenERP in Claude Cowork](docs/images/cowork-demo.gif)
 
-Asked in plain language, answered from the ledger — stock on hand across
-warehouses, with no query written and no screen driven.
-
-Full screen recording: [`docs/media/cowork-demo.mov`](docs/media/cowork-demo.mov).
-More of the walkthrough in [docs/demo-script.md](docs/demo-script.md).
-
 ---
 
 ## Why OpenERP?
