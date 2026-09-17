@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   attri-dev-kit:
-    uses: Attri-Inc/attri-dev-kit/.github/workflows/gate.yml@v1
+    uses: Attri-Inc/attri-dev-kit/.github/workflows/gate.yml@main
     with:
       tier: auto
       languages: python

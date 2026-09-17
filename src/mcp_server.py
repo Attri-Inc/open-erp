@@ -589,12 +589,11 @@ async def run_query(sql: str, limit: int = 200) -> str:
 def main() -> None:
     """Run over stdio (Claude Desktop/Code) or an HTTP transport (containers)."""
     transport = os.getenv("MCP_TRANSPORT", "stdio")
-    if transport in ("sse", "streamable-http"):
-        mcp.run(
-            transport=transport,
-            host=os.getenv("MCP_HOST", "127.0.0.1"),
-            port=MCP_PORT,
-        )
+    host = os.getenv("MCP_HOST", "127.0.0.1")
+    if transport == "streamable-http":
+        mcp.run(transport="streamable-http", host=host, port=MCP_PORT)
+    elif transport == "sse":
+        mcp.run(transport="sse", host=host, port=MCP_PORT)
     else:
         mcp.run()
 

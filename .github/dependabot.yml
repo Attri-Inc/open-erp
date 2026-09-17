@@ -5,11 +5,26 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
+
+  # The runtime interpreter is pinned to what CI actually tests (3.11 and 3.12
+  # in ci.yml). Let patch rebuilds through so security fixes still land, but
+  # hold major and minor bumps until the test matrix moves first.
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "python"
+        update-types:
+          - "version-update:semver-major"
+          - "version-update:semver-minor"
+
+  # Major action bumps change runner behaviour; take them deliberately.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
