@@ -36,7 +36,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Attri-Inc/open-erp"
+Homepage = "https://openerp.opentooling.ai"
+Source = "https://github.com/Attri-Inc/open-erp"
 Issues = "https://github.com/Attri-Inc/open-erp/issues"
 
 [project.scripts]
