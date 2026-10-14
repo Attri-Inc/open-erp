@@ -1,0 +1,33 @@
+name: Attri Dev Kit
+on:
+  push:
+    branches: [main, master, dev, dev-*, develop, qa, uat, staging]
+    paths-ignore: ['**/*.md', 'docs/**', '.github/ISSUE_TEMPLATE/**', '.github/CODEOWNERS', 'LICENSE', '*.txt', '.gitignore', '.editorconfig']
+  pull_request:
+    branches: [main, master, dev, dev-*, develop, qa, uat, staging, release/*]
+    paths-ignore: ['**/*.md', 'docs/**', '.github/ISSUE_TEMPLATE/**', '.github/CODEOWNERS', 'LICENSE', '*.txt', '.gitignore', '.editorconfig']
+  schedule:
+    - cron: '17 7 * * *'   # daily nightly attestation (Scorecard + SBOM + Sigstore)
+concurrency:
+  group: attri-dev-kit-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+# Read-only at the top; the gate job gets the writes it needs (Scorecard Token-Permissions).
+permissions:
+  contents: read
+jobs:
+  attri-dev-kit:
+    permissions:
+      contents: read
+      pull-requests: write
+      security-events: write
+      id-token: write
+      attestations: write
+      actions: read
+    uses: Attri-Inc/dev-kit/.github/workflows/gate.yml@main
+    with:
+      tier: auto
+      languages: auto
+      fail-on: high
+    # Only the alert webhook, not `secrets: inherit`: this repo is public.
+    secrets:
+      GOOGLE_CHAT_WEBHOOK_URL: ${{ secrets.ATTRI_DEV_KIT_NOTIFICATION_CHANNEL }}
